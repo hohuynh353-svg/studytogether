@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user['role'] == 'admin') {
                 echo "<script>alert('Đăng nhập thành công với quyền Admin!'); window.location='admin.php';</script>";
             } elseif ($user['role'] == 'nguoitinhphi') {
-                echo "<script>alert('Đăng nhập thành công với quyền Người tính phí!'); window.location='trangchu.html';</script>";
+                echo "<script>alert('Đăng nhập thành công với quyền Người tính phí!'); window.location='nguoidangtai.html';</script>";
             } else {
                 echo "<script>alert('Đăng nhập thành công với quyền Khách hàng!'); window.location='index.php';</script>";
             }
