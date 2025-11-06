@@ -2,97 +2,11 @@
 session_start();
 
 // Giả lập dữ liệu người dùng đã đăng nhập
-$isLoggedIn = true; // Thay đổi thành false để xem giao diện chưa đăng nhập
+$isLoggedIn = true;
 $user = [
     'name' => 'Nguyễn Văn A',
     'avatar' => '👤'
 ];
-
-// Danh mục tài liệu
-$categories = [
-    ['name' => 'Lập trình', 'icon' => '💻', 'count' => 1234, 'color' => '#667eea'],
-    ['name' => 'Toán học', 'icon' => '📐', 'count' => 892, 'color' => '#f093fb'],
-    ['name' => 'Ngoại ngữ', 'icon' => '🌍', 'count' => 756, 'color' => '#4facfe'],
-    ['name' => 'Kinh tế', 'icon' => '💰', 'count' => 645, 'color' => '#43e97b'],
-    ['name' => 'Khoa học', 'icon' => '🔬', 'count' => 523, 'color' => '#fa709a'],
-    ['name' => 'Văn học', 'icon' => '📚', 'count' => 478, 'color' => '#feca57'],
-    ['name' => 'Lịch sử', 'icon' => '🏛️', 'count' => 389, 'color' => '#ff6348'],
-    ['name' => 'Nghệ thuật', 'icon' => '🎨', 'count' => 267, 'color' => '#a29bfe']
-];
-
-// Tài liệu phổ biến
-$popular_documents = [
-    [
-        'title' => 'Lập trình PHP từ cơ bản đến nâng cao',
-        'author' => 'Trần Văn B',
-        'category' => 'Lập trình',
-        'views' => 5420,
-        'downloads' => 892,
-        'rating' => 4.8,
-        'date' => '05/10/2025',
-        'thumbnail' => '💻'
-    ],
-    [
-        'title' => 'Toán cao cấp A1 - Đại học Bách Khoa',
-        'author' => 'TS. Lê Thị C',
-        'category' => 'Toán học',
-        'views' => 4523,
-        'downloads' => 756,
-        'rating' => 4.9,
-        'date' => '03/10/2025',
-        'thumbnail' => '📐'
-    ],
-    [
-        'title' => 'IELTS Speaking - Chiến lược đạt 8.0+',
-        'author' => 'Phạm Văn D',
-        'category' => 'Ngoại ngữ',
-        'views' => 3892,
-        'downloads' => 645,
-        'rating' => 4.7,
-        'date' => '02/10/2025',
-        'thumbnail' => '🌍'
-    ],
-    [
-        'title' => 'Kinh tế vi mô - Nguyên lý cơ bản',
-        'author' => 'GS. Hoàng Văn E',
-        'category' => 'Kinh tế',
-        'views' => 3456,
-        'downloads' => 523,
-        'rating' => 4.6,
-        'date' => '01/10/2025',
-        'thumbnail' => '💰'
-    ],
-    [
-        'title' => 'Hóa học hữu cơ - Tổng hợp bài tập',
-        'author' => 'Nguyễn Thị F',
-        'category' => 'Khoa học',
-        'views' => 2987,
-        'downloads' => 478,
-        'rating' => 4.5,
-        'date' => '30/09/2025',
-        'thumbnail' => '🔬'
-    ],
-    [
-        'title' => 'JavaScript Modern - ES6+ và React',
-        'author' => 'Vũ Văn G',
-        'category' => 'Lập trình',
-        'views' => 2745,
-        'downloads' => 412,
-        'rating' => 4.8,
-        'date' => '28/09/2025',
-        'thumbnail' => '💻'
-    ]
-];
-
-// Tài liệu mới nhất
-$latest_documents = [
-    ['title' => 'Python Machine Learning 2025', 'author' => 'AI Team', 'time' => '2 giờ trước', 'category' => 'Lập trình'],
-    ['title' => 'Đề thi Toán A1 học kỳ 1', 'author' => 'Admin', 'time' => '5 giờ trước', 'category' => 'Toán học'],
-    ['title' => 'TOEIC Listening Practice', 'author' => 'English Center', 'time' => '8 giờ trước', 'category' => 'Ngoại ngữ'],
-    ['title' => 'Marketing căn bản', 'author' => 'Business School', 'time' => '1 ngày trước', 'category' => 'Kinh tế']
-];
-
-
 ?>
 
 <!DOCTYPE html>
@@ -102,6 +16,192 @@ $latest_documents = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyTogether - Nền tảng chia sẻ tài liệu học tập</title>
     <link rel="stylesheet" href="../css/index.css">
+
+    <style>
+        /* 🟡 CSS đơn giản cho phần bố cục 3 cột */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 20% 60% 20%;
+            gap: 10px;
+            padding: 15px;
+        }
+        .column {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 400px;
+        }
+        .column h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+
+      
+         /* --- GRID CHỨA CÁC CARD --- */
+        .cards-container {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+         gap: 70px;
+        padding: 20px;
+        }
+
+         /* --- CARD CHÍNH --- */
+          .doc-card {
+         background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+ }
+
+  .doc-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+  }
+
+   /* --- ẢNH TRÊN CÙNG --- */
+  .doc-thumb {
+  background: linear-gradient(135deg, #7b6ef6, #5ac8fa);
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+
+  .doc-thumb img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 10px;
+  }
+
+  /* --- THÂN CARD --- */
+  .doc-body {
+  padding: 16px 18px 14px;
+  }
+
+  /* --- TAG DANH MỤC --- */
+  .category-tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-weight: 500;
+  font-size: 13px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  }
+
+  /* --- TIÊU ĐỀ --- */
+  .doc-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 4px 0 6px;
+  line-height: 1.4;
+  }
+
+  /* --- NGƯỜI UPLOAD --- */
+  .doc-author {
+  color: #475569;
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+ }
+
+  /* --- THỐNG KÊ DƯỚI --- */
+ .doc-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+  color: #64748b;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 10px;
+ }
+
+ .doc-stats span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+ }
+ 
+/* //////////////////////////////////////////////////////////// */
+.doc-thumb {
+  height: 160px;
+  background: #ddd url('uploads/ten_anh.jpg') center/cover no-repeat;
+}
+.doc-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 260px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.doc-card:hover {
+  transform: translateY(-4px);
+}
+
+.doc-thumb {
+  height: 140px; /* ảnh chỉ chiếm nửa trên */
+}
+
+.doc-body {
+  padding: 15px;
+  text-align: left;
+}
+.doc-card {
+  width: 250px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-thumb {
+  position: relative;
+  width: 100%;
+  height: 150px; /* đặt chiều cao cố định cho ảnh */
+  overflow: hidden;
+}
+
+.doc-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* phần mờ dần ở dưới ảnh */
+.doc-thumb::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%);
+  pointer-events: none;
+}
+
+.doc-body {
+  padding: 10px 15px;
+}
+
+
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -116,24 +216,22 @@ $latest_documents = [
                 <a href="#" class="nav-link">Trang chủ</a>
                 <a href="#" class="nav-link">Danh mục</a>
                 <a href="#" class="nav-link hot-link">🔥Tài liệu hot</a>
-
                 <a href="#" class="nav-link">Về chúng tôi</a>
             </nav>
-             <div class="header-actions">
-    <button class="btn-upload" onclick="window.location.href='dkdn.php'">Đăng kí tài khoản</button>
 
-    <?php if ($isLoggedIn): ?>
-        <div class="user-avatar"><?php echo $user['avatar']; ?></div>
-    <?php else: ?>
-        <button class="btn-upload" 
-            style="background: white; color: #667eea; border: 2px solid #667eea;"
-            onclick="window.location.href='dkdn.php'">
-            Đăng nhập
-        </button>
-    <?php endif; ?>
-</div>
+            <div class="header-actions">
+                <button class="btn-upload" onclick="window.location.href='dkdn.php'">Đăng kí tài khoản</button>
 
-          
+                <?php if ($isLoggedIn): ?>
+                    <div class="user-avatar"><?php echo $user['avatar']; ?></div>
+                <?php else: ?>
+                    <button class="btn-upload" 
+                        style="background: white; color: #667eea; border: 2px solid #667eea;"
+                        onclick="window.location.href='dkdn.php'">
+                        Đăng nhập
+                    </button>
+                <?php endif; ?>
+            </div>
         </div>
     </header>
 
@@ -150,97 +248,101 @@ $latest_documents = [
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- 🧱 Bố cục 3 phần chính -->
    
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Categories -->
-        <h2 class="section-title">📂 Danh mục phổ biến</h2>
-        <div class="categories-grid">
-            <?php foreach ($categories as $category): ?>
-            <div class="category-card">
-                <div class="category-icon"><?php echo $category['icon']; ?></div>
-                <div class="category-name"><?php echo $category['name']; ?></div>
-                <div class="category-count"><?php echo number_format($category['count']); ?> tài liệu</div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-
-        <!-- Content Layout -->
-        <div class="content-layout">
-            <!-- Popular Documents -->
-            <div>
-                <h2 class="section-title">🔥 Tài liệu phổ biến</h2>
-                <div class="documents-grid">
-                    <?php foreach ($popular_documents as $doc): ?>
-                    <div class="document-card">
-                        <div class="doc-thumbnail"><?php echo $doc['thumbnail']; ?></div>
-                        <div class="doc-content">
-                            <span class="doc-category"><?php echo $doc['category']; ?></span>
-                            <h3 class="doc-title"><?php echo $doc['title']; ?></h3>
-                            <div class="doc-author">👤 <?php echo $doc['author']; ?></div>
-                            <div class="doc-stats">
-                                <div class="doc-stat-item">
-                                    <span>👁️</span>
-                                    <span><?php echo number_format($doc['views']); ?></span>
-                                </div>
-                                <div class="doc-stat-item">
-                                    <span>⬇️</span>
-                                    <span><?php echo number_format($doc['downloads']); ?></span>
-                                </div>
-                                <div class="doc-rating">
-                                    <span>⭐</span>
-                                    <span><?php echo $doc['rating']; ?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
+        <div class="main-layout">
+            <!-- Cột 1: Bài viết admin -->
+            <div class="column">
+                <h2>📰 Bài viết từ Admin</h2>
+                <div class="doc-card">📢 Cập nhật tính năng mới</div>
+                <div class="doc-card">💡 Hướng dẫn đăng tài liệu</div>
+                <div class="doc-card">🧠 Mẹo học tập hiệu quả</div>
             </div>
 
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <!-- Latest Documents -->
-                <div class="sidebar-card">
-                    <h3 class="sidebar-title">🆕 Tài liệu mới nhất</h3>
-                    <?php foreach ($latest_documents as $latest): ?>
-                    <div class="latest-item">
-                        <div class="latest-title"><?php echo $latest['title']; ?></div>
-                        <div class="latest-meta">
-                            <span>👤 <?php echo $latest['author']; ?></span>
-                            <span>⏰ <?php echo $latest['time']; ?></span>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
+       
+           <!-- Cột 2: Card tài liệu -->
+<div class="column" id="main-content">
+    <h2>🔥 Tài liệu phổ biến</h2>
+    <div class="cards-container">
+        <?php
+        include 'connect.php';
 
-                <!-- Top Contributors -->
-                <div class="sidebar-card">
-                    <h3 class="sidebar-title">🏆 Người đóng góp xuất sắc</h3>
-                    <div class="latest-item">
-                        <div class="latest-title">🥇 Nguyễn Văn A</div>
-                        <div class="latest-meta">
-                            <span>245 tài liệu</span>
+        $sql = "SELECT t.*, d.tendanhmuc, u.hoten 
+                FROM tailieu t
+                LEFT JOIN danhmuc d ON t.danhmucid = d.id
+                LEFT JOIN users u ON t.nguoiupload = u.id
+                WHERE t.trangthai = 'daduyet'
+                ORDER BY t.id DESC";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+
+                // ✅ Thư mục chứa ảnh thực tế
+                $uploadPath = __DIR__ . "/uploads/";
+                $webPath    = "php/uploads/"; // đường dẫn dùng cho trình duyệt
+
+  $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+
+    // ✅ Sửa lại đường dẫn file thật — KHÔNG thêm "php/" nữa
+    if (!empty($row['trangbia']) && file_exists(__DIR__ . "/uploads/" . $row['trangbia'])) {
+    $thumbnail = $basePath . "/uploads/" . $row['trangbia'];
+   } else {
+    $thumbnail = $basePath . "/uploads/default-doc.jpg";
+   }
+
+
+                // ✅ Hiển thị card tài liệu
+                echo '
+                <div class="doc-card" onclick="hienThiChiTietTaiLieu(' . $row['id'] . ')">
+                   <div class="doc-thumb" style="
+    background: url(\'' . htmlspecialchars($thumbnail) . '\') center/cover no-repeat;
+"></div>
+
+                    <div class="doc-body">
+                        <span class="category-tag">' . htmlspecialchars($row['tendanhmuc'] ?? 'Chưa có') . '</span>
+                        <h3 class="doc-title">' . htmlspecialchars($row['tentailieu']) . '</h3>
+                        <p class="doc-author">👤 ' . htmlspecialchars($row['hoten'] ?? 'Không rõ') . '</p>
+                        <div class="doc-stats">
+                            <span title="Lượt xem">👁️ ' . number_format($row['luotxem'] ?? 0) . '</span>
+                            <span 
+                                title="Lượt tải xuống" 
+                                onclick="event.stopPropagation(); window.location.href=\'download.php?id=' . $row['id'] . '\'">
+                                📥 ' . number_format($row['luottaixuong'] ?? 0) . '
+                            </span>
+                            <span title="Đánh giá">⭐ ' . number_format($row['danhgia'] ?? 4.5, 1) . '</span>
                         </div>
                     </div>
-                    <div class="latest-item">
-                        <div class="latest-title">🥈 Trần Thị B</div>
-                        <div class="latest-meta">
-                            <span>189 tài liệu</span>
-                        </div>
-                    </div>
-                    <div class="latest-item">
-                        <div class="latest-title">🥉 Lê Văn C</div>
-                        <div class="latest-meta">
-                            <span>156 tài liệu</span>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </div>
+                </div>';
+            }
+        } else {
+            echo "<p>Chưa có tài liệu nào được duyệt.</p>";
+        }
+        ?>
     </div>
+</div>
+
+
+
+            <!-- Cột 3: Tài liệu mới nhất -->
+            <div class="column">
+                <h2>📄 Tài liệu mới nhất</h2>
+                <ul>
+                    <li>Python Machine Learning 2025</li>
+                    <li>TOEIC Listening Practice</li>
+                    <li>Marketing căn bản</li>
+                    <li>Data Structures & Algorithms</li>
+                </ul>
+
+                <h2>🏅 Người đóng góp xuất sắc</h2>
+                <ul>
+                    <li>Nguyễn Văn A</li>
+                    <li>Trần Thị B</li>
+                    <li>Phạm Văn C</li>
+                </ul>
+            </div>
+        </div>
+    
 
     <!-- Footer -->
     <footer class="footer">
@@ -276,36 +378,51 @@ $latest_documents = [
         </div>
     </footer>
 
-    <script>
-        // Search functionality
-        document.querySelector('.search-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const query = this.value;
-                alert('Đang tìm kiếm: ' + query);
-            }
+
+<script>
+function hienThiChiTietTaiLieu(id) {
+    // Gửi yêu cầu lấy chi tiết tài liệu
+    fetch('chitiet_tailieu.php?id=' + id)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('main-content').innerHTML = '<p>Lỗi tải chi tiết tài liệu.</p>';
         });
 
-        // Animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+    // Gọi API tăng lượt xem
+    fetch('update_luotxem.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'id=' + encodeURIComponent(id)
+    })
+    .then(res => res.json())
+    .then(data => console.log('Lượt xem +1'))
+    .catch(err => console.error(err));
+}
 
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+function tangLuotTai(id, tenfile) {
+    // Gọi API tăng lượt tải
+    fetch('update_luottaixuong.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'id=' + encodeURIComponent(id)
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Lượt tải +1');
+        alert('📥 Đang tải xuống...');
+        // Sau này mở link tải file thật:
+        if (tenfile) {
+            window.location.href = 'uploads/' + tenfile;
+        }
+    })
+    .catch(err => console.error(err));
+}
+</script>
 
-        document.querySelectorAll('.category-card, .document-card, .stat-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
-        });
-    </script>
+
 </body>
 </html>

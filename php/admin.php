@@ -98,82 +98,119 @@
 <!-- Modal Thêm Tài Liệu -->
 <div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="addDocumentForm" enctype="multipart/form-data">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Thêm Tài Liệu Mới</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="ten_tai_lieu" class="form-label">Tên tài liệu</label>
-                        <input type="text" id="ten_tai_lieu" name="ten_tai_lieu" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="danh_muc" class="form-label">Danh mục</label>
-                        <select id="danh_muc" name="danh_muc" class="form-select" required>
-                            <option value="">Chọn danh mục</option>
-                            <!-- load từ CSDL -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phi" class="form-label">Phí (VND)</label>
-                        <input type="number" id="phi" name="phi" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="file" class="form-label">Chọn file</label>
-                        <input type="file" id="file" name="file" class="form-control" required>
-                    </div>
-                    <input type="hidden" id="user_id" name="user_id" value="<?= $_SESSION['user_id'] ?>">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Thêm</button>
-                </div>
-            </div>
-        </form>
+       <form id="addDocumentForm" enctype="multipart/form-data">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Thêm Tài Liệu Mới</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Tên tài liệu -->
+      <div class="mb-3">
+        <label for="ten_tai_lieu" class="form-label">Tên tài liệu</label>
+        <input type="text" id="ten_tai_lieu" name="ten_tai_lieu" class="form-control" required>
+      </div>
+
+      <!-- Danh mục -->
+      <div class="mb-3">
+        <label for="danh_muc" class="form-label">Danh mục</label>
+        <select id="danh_muc" name="danh_muc" class="form-select" required>
+          <option value="">Chọn danh mục</option>
+          <!-- load từ CSDL -->
+        </select>
+      </div>
+
+      <!-- Phí -->
+      <div class="mb-3">
+        <label for="phi" class="form-label">Phí (VND)</label>
+        <input type="number" id="phi" name="phi" class="form-control" required>
+      </div>
+
+      <!-- File PDF -->
+      <div class="mb-3">
+        <label for="file" class="form-label">Chọn file PDF</label>
+        <input type="file" id="file" name="file" class="form-control" accept="application/pdf" required>
+      </div>
+
+      <!-- Ảnh bìa -->
+      <div class="mb-3">
+        <label for="trangbia" class="form-label">Chọn ảnh bìa (bắt buộc)</label>
+        <input type="file" id="trangbia" name="trangbia" class="form-control" accept="image/*" required>
+        <small class="text-danger">Vui lòng chọn ảnh bìa cho tài liệu.</small>
+      </div>
+
+      <input type="hidden" id="user_id" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+      <button type="submit" class="btn btn-primary">Thêm</button>
+    </div>
+  </div>
+  </form>
+
     </div>
 </div>
 
 <!-- Modal Sửa Tài Liệu -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title">Sửa tài liệu</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm">
-                    <input type="hidden" id="edit_id">
-                    <div class="mb-3">
-                        <label class="form-label">Tên tài liệu</label>
-                        <input type="text" class="form-control" id="edit_tentailieu" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phí</label>
-                        <input type="number" class="form-control" id="edit_phi" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Danh mục</label>
-                        <select id="edit_danhmuc" class="form-select"></select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">File hiện tại</label>
-                        <div id="filePreview"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tải file mới (nếu muốn thay)</label>
-                        <input type="file" class="form-control" id="edit_file">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-warning" id="btnSaveEdit">Lưu thay đổi</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="editForm" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title">Sửa tài liệu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+
+        <div class="modal-body">
+          <input type="hidden" id="edit_id">
+
+          <div class="mb-3">
+            <label class="form-label">Tên tài liệu</label>
+            <input type="text" class="form-control" id="edit_tentailieu" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phí</label>
+            <input type="number" class="form-control" id="edit_phi" step="0.01" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Danh mục</label>
+            <select id="edit_danhmuc" class="form-select"></select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Ảnh trang bìa hiện tại</label>
+           <img id="thumbImage" src="" alt="Ảnh hiện tại"
+     style="width:80px; height:auto; margin-top:5px; border-radius:8px; display:block;">
+
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tải ảnh trang bìa mới (nếu muốn thay)</label>
+            <input type="file" class="form-control" id="edit_trangbia_new" accept="image/*">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">File tài liệu hiện tại</label>
+            <div id="filePreview"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tải file mới (nếu muốn thay)</label>
+            <input type="file" class="form-control" id="edit_file">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-primary" id="btnSaveEdit">💾 Lưu thay đổi</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <!-- ========== SCRIPTS ========== -->
@@ -191,6 +228,7 @@ const addDocumentModal = new bootstrap.Modal(document.getElementById('addDocumen
 
 // Khởi tạo dashboard
 document.addEventListener('DOMContentLoaded', function() {
+     let currentSection = 'documents'; 
     initEventListeners();
     showTable(currentSection);
 });
@@ -260,7 +298,7 @@ function getTableConfig(section) {
         },
         'documents': {
             title: 'Quản lý tài liệu',
-            headers: ['ID', 'Tên tài liệu', 'Danh mục', 'Người upload', 'File Upload', 'Phí', 'Ngày upload', 'Trạng thái', 'Thao tác'],
+            headers: ['ID', 'Tên tài liệu', 'Danh mục', 'Người upload', 'File Upload','Trang bìa', 'Phí', 'Ngày upload', 'Trạng thái', 'Thao tác'],
             sectionName: 'Tài liệu',
             showAddButton: true
         },
@@ -314,21 +352,19 @@ function renderTableStructure(config) {
 
 // ========== XỬ LÝ TÀI LIỆU ==========
 
-// Load dữ liệu tài liệu
+/// Load dữ liệu tài liệu
 function loadDocumentsData() {
-    fetch('load_tailieu.php')
+    fetch('load_tailieu_admin.php')
         .then(res => res.json())
         .then(data => {
             const tbody = document.querySelector('tbody');
-            const emptyState = document.querySelector('.empty-state');
             tbody.innerHTML = '';
 
             if (!data.success || data.data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">Chưa có tài liệu nào</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">Chưa có tài liệu nào</td></tr>`;
                 return;
             }
 
-            emptyState.style.display = 'none';
             renderDocumentsTable(data.data, tbody);
             initDocumentEventListeners();
         })
@@ -337,10 +373,12 @@ function loadDocumentsData() {
 
 // Render bảng tài liệu
 function renderDocumentsTable(documents, tbody) {
+    tbody.innerHTML = '';
     documents.forEach(item => {
         const fileHTML = getFileHTML(item);
+        const coverHTML = getCoverHTML(item); // 👉 cột trang bìa
         const statusHTML = getStatusHTML(item);
-        
+
         const row = `
             <tr data-id="${item.id}">
                 <td>${item.id}</td>
@@ -348,6 +386,7 @@ function renderDocumentsTable(documents, tbody) {
                 <td>${item.ten_danh_muc || '—'}</td>
                 <td>${item.ten_nguoi_upload || '—'}</td>
                 <td>${fileHTML}</td>
+                <td>${coverHTML}</td> <!-- 🖼 Cột trang bìa -->
                 <td>${item.phi}</td>
                 <td>${item.ngayupload}</td>
                 <td>${statusHTML}</td>
@@ -360,20 +399,51 @@ function renderDocumentsTable(documents, tbody) {
         tbody.insertAdjacentHTML('beforeend', row);
     });
 }
-
-// Tạo HTML cho file
+// ✅ Tạo HTML hiển thị file upload (đầy đủ cho ảnh, PDF, Word, và file khác)
 function getFileHTML(item) {
-    const filePath = `uploads/${item.fileupload}`;
-    const fileExt = item.fileupload.split('.').pop().toLowerCase();
-    
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) {
-        return `<img src="${filePath}" alt="${item.tentailieu}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">`;
-    } else if (fileExt === 'pdf') {
-        return `<iframe src="${filePath}" width="120" height="120" style="border:none;"></iframe>`;
-    } else {
-        return `<a href="${filePath}" target="_blank">📎 ${item.fileupload}</a>`;
+    if (!item.fileupload) {
+        return `<span class="text-danger">Không có file</span>`;
     }
+
+    // ⚙️ Nếu PHP đã trả về đường dẫn đầy đủ (đã có http://), giữ nguyên
+    const filePath = item.fileupload.startsWith('http')
+        ? item.fileupload
+        : `uploads/${item.fileupload}`;
+
+    const fileExt = filePath.split('.').pop().toLowerCase();
+
+    // 🖼️ Ảnh
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) {
+        return `<img src="${filePath}" alt="${item.tentailieu}"
+                 style="width:80px;height:80px;object-fit:cover;border-radius:6px;"
+                 onerror="this.src='no-image.png'">`;
+    }
+
+    // 📄 PDF
+    if (fileExt === 'pdf') {
+        return `<iframe src="${filePath}" width="120" height="120" style="border:none;"></iframe>`;
+    }
+
+    // 📝 Word (.doc, .docx)
+    if (['doc', 'docx'].includes(fileExt)) {
+        return `<a href="${filePath}" target="_blank" 
+                   style="text-decoration:none;color:#007bff;">
+                   📝 Xem tài liệu Word
+                </a>`;
+    }
+
+    // 📎 Các loại file khác
+    return `<a href="${filePath}" target="_blank">📎 Tải xuống</a>`;
 }
+
+
+// ✅ Tạo HTML hiển thị trang bìa 
+function getCoverHTML(item) {
+    if (!item.trangbia) return '<span class="text-muted">—</span>';
+    return `<img src="uploads/${item.trangbia}" alt="Trang bìa"
+                style="width:80px;height:80px;object-fit:cover;border-radius:6px;">`;
+}
+
 
 // Tạo HTML cho trạng thái
 function getStatusHTML(item) {
@@ -454,15 +524,28 @@ function handleEditDocument(e) {
     const row = e.target.closest('tr');
     const id = row.dataset.id;
     const tentailieu = row.children[1].textContent;
-    const phi = row.children[5].textContent;
     const danhMuc = row.children[2].textContent;
+    const phi = row.children[5].textContent;
     const fileLink = row.querySelector('a, img, iframe');
+
+    // 👉 Lấy đường dẫn ảnh trang bìa (nếu có)
+    // Giả sử trong bảng bạn có cột chứa ảnh (vd: cột 3 hoặc có class 'thumb')
+    const thumbCell = row.querySelector('img'); // lấy ảnh đầu tiên trong dòng
+    const thumbSrc = thumbCell ? thumbCell.getAttribute('src') : 'php/uploads/default-doc.jpg';
 
     // Điền dữ liệu vào modal
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_tentailieu').value = tentailieu;
     document.getElementById('edit_phi').value = phi;
-    document.getElementById('filePreview').innerHTML = fileLink ? fileLink.outerHTML : 'Không có file';
+
+    // Hiển thị file hiện tại
+    document.getElementById('filePreview').innerHTML = fileLink
+        ? fileLink.outerHTML
+        : 'Không có file';
+
+    // ✅ Hiển thị ảnh trang bìa hiện tại
+    const thumbImage = document.getElementById('thumbImage');
+    if (thumbImage) thumbImage.src = thumbSrc;
 
     // Load danh mục cho modal sửa
     fetch('load_danhmuc.php')
@@ -537,6 +620,13 @@ function handleSaveEdit() {
     })
     .catch(err => console.error('Lỗi cập nhật:', err));
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const btnSave = document.getElementById("btnSaveEdit");
+  if (btnSave) {
+    btnSave.addEventListener("click", handleSaveEdit);
+  }
+});
+
 
 // ========== XỬ LÝ DANH MỤC ==========
 

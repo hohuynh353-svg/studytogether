@@ -206,6 +206,7 @@
                 <th>Danh mục</th>
                 <th>Người upload</th>
                 <th>File</th>
+                <th>Trang bìa</th>
                 <th>Phí</th>
                 <th>Ngày upload</th>
                 <th>Trạng thái</th>
@@ -249,6 +250,8 @@
             accept=".pdf,.doc,.docx,.ppt,.pptx"
             required
           />
+          <label>Trang bìa:</label>
+          <input type="file" name="trangbia" accept="image/*" required />
 
           <button type="submit" class="btn btn-success">Lưu tài liệu</button>
         </form>
@@ -291,6 +294,19 @@
               name="file"
               accept=".pdf,.doc,.docx,.ppt,.pptx"
             />
+          </div>
+
+          <div class="form-group">
+            <label for="edit_trangbia">Trang bìa mới (nếu muốn thay):</label>
+            <input
+              type="file"
+              id="edit_trangbia"
+              name="trangbia"
+              accept="image/*"
+            />
+            <div id="preview_trangbia" style="margin-top: 10px">
+              <!-- Ảnh xem trước sẽ hiển thị ở đây -->
+            </div>
           </div>
 
           <div class="form-actions">
@@ -359,7 +375,7 @@
         tbody.innerHTML =
           '<tr><td colspan="8" style="text-align:center;">Đang tải dữ liệu...</td></tr>';
 
-        fetch("load_tailieu.php")
+        fetch("load_tailieu_user.php")
           .then((res) => res.json())
           .then((data) => {
             tbody.innerHTML = "";
@@ -387,11 +403,13 @@
       }
 
       // 🟢 Render bảng tài liệu
+
       function renderDocumentsTable(documents, tbody) {
         tbody.innerHTML = "";
 
         documents.forEach((item) => {
           const fileDisplay = getFileDisplay(item);
+          console.log("📄 item:", item);
 
           // 🟢 Nếu là admin thì hiển thị dropdown chọn trạng thái
           let statusHTML = "";
@@ -434,6 +452,19 @@
         <td>${item.ten_danh_muc || "—"}</td>
         <td>${item.ten_nguoi_upload || "—"}</td>
         <td>${fileDisplay}</td>
+<td>
+  ${
+    item.trangbia
+      ? `<img src="${item.trangbia}" 
+               width="100" height="100" 
+               style="object-fit:cover;border-radius:6px;">`
+      : "—"
+  }
+</td>
+
+
+
+
         <td>${item.phi ? item.phi + " VNĐ" : "Miễn phí"}</td>
         <td>${item.ngayupload}</td>
         <td>${statusHTML}</td>
@@ -497,16 +528,31 @@
         }
       }
 
-      // Lấy HTML hiển thị file
+      // ✅ Hàm hiển thị file upload
       function getFileDisplay(item) {
-        const filePath = `uploads/${item.fileupload}`;
+        if (!item.fileupload) {
+          return `<span class="text-danger">Không có file</span>`;
+        }
 
-        if (item.fileupload.endsWith(".pdf")) {
-          return `<embed src="${filePath}" type="application/pdf" width="100" height="100">`;
-        } else if (item.fileupload.match(/\.(jpg|jpeg|png|gif)$/i)) {
-          return `<img src="${filePath}" width="100" height="100" style="object-fit:cover;">`;
+        let filePath = item.fileupload.trim();
+
+        // Nếu database chỉ lưu tên file (ví dụ: "abc.pdf") thì thêm đường dẫn gốc:
+        if (!filePath.startsWith("http")) {
+          filePath = `http://localhost/doan4/php/uploads/${filePath}`;
+        }
+
+        // Lấy phần mở rộng file
+        const fileExt = filePath.split(".").pop().toLowerCase();
+
+        // ✅ Xử lý theo loại file
+        if (fileExt === "pdf") {
+          return `<embed src="${filePath}" type="application/pdf" width="100" height="100" style="border:none;">`;
+        } else if (["jpg", "jpeg", "png", "gif"].includes(fileExt)) {
+          return `<img src="${filePath}" width="100" height="100"
+             style="object-fit:cover;border-radius:6px;"
+             onerror="this.src='no-image.png'">`;
         } else {
-          return `<a href="${filePath}" target="_blank">${item.fileupload}</a>`;
+          return `<a href="${filePath}" target="_blank">📎 Tải xuống</a>`;
         }
       }
 
@@ -617,11 +663,19 @@
 
       // Sửa tài liệu
       function editDocument(id) {
-        fetch("load_tailieu.php")
+        fetch("load_tailieu_user.php")
           .then((res) => res.json())
           .then((data) => {
             const doc = data.data.find((item) => item.id == id);
             if (!doc) return alert("Không tìm thấy tài liệu!");
+
+            // 🖼️ Hiển thị ảnh bìa hiện tại
+            const previewDiv = document.getElementById("preview_trangbia");
+            if (doc.trangbia) {
+              previewDiv.innerHTML = `<img src="uploads/${doc.trangbia}" width="150" height="150" style="object-fit:cover;border-radius:8px;">`;
+            } else {
+              previewDiv.innerHTML = "<p>Chưa có trang bìa</p>";
+            }
 
             // Điền dữ liệu vào form
             document.getElementById("edit_id").value = doc.id;

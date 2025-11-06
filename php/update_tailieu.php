@@ -12,18 +12,27 @@ if (empty($id) || empty($ten)) {
     exit;
 }
 
-// Nếu có file mới
 $file_sql = "";
-if (!empty($_FILES['file']['name'])) {
-    $uploadDir = 'uploads/';
-    if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+$uploadDir = 'uploads/';
+if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
+// ✅ Xử lý file tài liệu (fileupload)
+if (!empty($_FILES['file']['name'])) {
     $fileName = time() . '_' . basename($_FILES['file']['name']);
     $targetPath = $uploadDir . $fileName;
     move_uploaded_file($_FILES['file']['tmp_name'], $targetPath);
-    $file_sql = ", fileupload = '$fileName'";
+    $file_sql .= ", fileupload = '$fileName'";
 }
 
+// ✅ Xử lý ảnh trang bìa (trangbia)
+if (!empty($_FILES['trangbia']['name'])) {
+    $thumbName = time() . '_' . basename($_FILES['trangbia']['name']);
+    $thumbPath = $uploadDir . $thumbName;
+    move_uploaded_file($_FILES['trangbia']['tmp_name'], $thumbPath);
+    $file_sql .= ", trangbia = '$thumbName'";
+}
+
+// ✅ Cập nhật dữ liệu
 $sql = "UPDATE tailieu 
         SET tentailieu = ?, phi = ?, danhmucid = ? $file_sql 
         WHERE id = ?";
